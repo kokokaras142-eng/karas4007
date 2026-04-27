@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم البطل كراس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .countdown-box { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-bottom: 4px solid #38bdf8; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="countdown-box p-4 rounded-xl text-center">
+                <h3 class="text-sm text-blue-400 mb-1">امتحانات الشهر</h3>
+                <div id="timer1" class="text-2xl font-bold text-white">جاري الحساب...</div>
+            </div>
+            <div class="countdown-box p-4 rounded-xl text-center border-blue-500">
+                <h3 class="text-sm text-yellow-400 mb-1">امتحانات السنة</h3>
+                <div id="timer2" class="text-2xl font-bold text-white">جاري الحساب...</div>
+            </div>
+            <div class="countdown-box p-4 rounded-xl text-center border-green-500">
+                <h3 class="text-sm text-green-400 mb-1">حرية (آخر يوم مدرسة)</h3>
+                <div id="timer3" class="text-2xl font-bold text-white">جاري الحساب...</div>
+            </div>
+        </div>
+
+        <div class="glass rounded-2xl overflow-hidden shadow-2xl">
+            <div class="bg-blue-600 p-6 text-center">
+                <h1 class="text-3xl font-bold text-white mb-2">لوحة تحكم البطل كراس 🏆</h1>
+                <p class="text-blue-100">"الأوائل يحلون امتحانات كثيرة!"</p>
+            </div>
+            
+            <div class="p-6">
+                <table class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="text-blue-400 border-b border-slate-700">
+                            <th class="p-4">المادة</th>
+                            <th class="p-4">المهمة</th>
+                            <th class="p-4 text-center">الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-700">
+                        <tr class="hover:bg-slate-800 transition-colors">
+                            <td class="p-4 font-bold text-blue-300">ساينس</td>
+                            <td class="p-4 text-slate-300">مراجعة وحل امتحانين</td>
+                            <td class="p-4 text-center"><input type="checkbox" class="w-5 h-5 accent-blue-500"></td>
+                        </tr>
+                        <tr class="hover:bg-slate-800 transition-colors">
+                            <td class="p-4 font-bold text-blue-300">عربي</td>
+                            <td class="p-4 text-slate-300">نحو وقراءة مكثفة</td>
+                            <td class="p-4 text-center"><input type="checkbox" class="w-5 h-5 accent-blue-500"></td>
+                        </tr>
+                        <tr class="hover:bg-slate-800 transition-colors">
+                            <td class="p-4 font-bold text-blue-300">دراسات</td>
+                            <td class="p-4 text-slate-300">مراجعة الخرائط والتاريخ</td>
+                            <td class="p-4 text-center"><input type="checkbox" class="w-5 h-5 accent-blue-500"></td>
+                        </tr>
+                        <tr class="hover:bg-slate-800 transition-colors">
+                            <td class="p-4 font-bold text-blue-300">إنجليزي</td>
+                            <td class="p-4 text-slate-300">كلمات الوحدة الأخيرة</td>
+                            <td class="p-4 text-center"><input type="checkbox" class="w-5 h-5 accent-blue-500"></td>
+                        </tr>
+                        <tr class="hover:bg-slate-800 transition-colors">
+                            <td class="p-4 font-bold text-blue-300 text-pink-400">برمجة 💻</td>
+                            <td class="p-4 text-slate-300 italic">تطوير موقعك الخاص (مكافأة)</td>
+                            <td class="p-4 text-center text-xl">🚀</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTimers() {
+            // تواريخ الامتحانات (تقريبية لعام 2026 - يمكنك تعديلها بدقة)
+            const dates = {
+                examMonth: new Date("May 1, 2026 08:00:00").getTime(),
+                examYear: new Date("May 15, 2026 08:00:00").getTime(),
+                endSchool: new Date("May 28, 2026 14:00:00").getTime()
+            };
+
+            const now = new Date().getTime();
+
+            function calculate(target, elementId) {
+                const diff = target - now;
+                if (diff < 0) {
+                    document.getElementById(elementId).innerHTML = "بدأت! بالتوفيق";
+                    return;
+                }
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById(elementId).innerHTML = `${days} يوم و ${hours} ساعة`;
+            }
+
+            calculate(dates.examMonth, "timer1");
+            calculate(dates.examYear, "timer2");
+            calculate(dates.endSchool, "timer3");
+        }
+
+        setInterval(updateTimers, 1000);
+        updateTimers();
+    </script>
+</body>
+</html>
